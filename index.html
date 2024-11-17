@@ -52,21 +52,26 @@
 
                 // Obtendo os dados da resposta JSON
                 const data = await response.json();
+                console.log('Dados recebidos do MockAPI:', data); // Log para verificar os dados recebidos
 
                 // Verificando se existem dados para exibir
                 if (data && data.length > 0) {
-                    const clima2Data = data[0];  // Pegando os dados do primeiro item (caso haja mais de um)
+                    const clima2Data = data[data.length - 1];  // Pegando os dados do último item
+                    console.log('Dados do último item:', clima2Data); // Log para verificar o item específico
 
                     // Atualizando a página com os dados recebidos
                     document.getElementById('chuva').textContent = `Probabilidade de Chuva: ${clima2Data.chuva}%`;
                     document.getElementById('temperatura').textContent = `Temperatura: ${clima2Data.temperatura} °C`;
-                    document.getElementById('qtde').textContent = `Quantidade de Chuva: ${clima2Data.qtde}`;
+                    document.getElementById('qtde').textContent = `Quantidade de Chuva: ${clima2Data.qtde}mm`;
 
                     // Formatando a data de última atualização
                     const localDate = new Date(clima2Data.lastUpdated);
                     document.getElementById('lastUpdated').textContent = `Última Atualização: ${localDate.toLocaleString()}`;
+
+                    // Exibindo a data de última atualização no console
+                    console.log('Última atualização formatada:', localDate.toLocaleString());
                 } else {
-                    alert('Não há dados disponíveis.');
+                    console.warn('Não há dados disponíveis.'); // Log de aviso se não houver dados
                 }
             } catch (error) {
                 // Exibindo o erro no console caso algo dê errado
@@ -75,9 +80,8 @@
         }
 
         // Chama a função quando a página é carregada e a cada 1 minuto
-        
-        setInterval(getWeatherFromAPI, 14400000); // Atualiza a cada 1 minuto
         window.onload = getWeatherFromAPI;
+        setInterval(getWeatherFromAPI, 60000); // Atualiza a cada 1 minuto
     </script>
 </body>
 </html>
