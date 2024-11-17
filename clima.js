@@ -4,36 +4,42 @@ const fetch = require('node-fetch');
 async function getWeatherData() {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-
-    // Substitua pela URL do site que você deseja fazer o scraping
     const siteURL = 'https://www.tempo.com/sorocaba.htm';
 
     try {
         await page.goto(siteURL, { waitUntil: 'domcontentloaded', timeout: 60000 });
-        console.log('Dados recebidos da API:', data);
+        console.log('Iniciando a coleta de dados do clima...');
 
-        // Ajuste os seletores de acordo com a inspeção do site
-        const temperatura = await page.$eval('.max.changeUnitT', element => element.textContent.trim());
+        // Coleta os dados do site
         const chuva = await page.$eval('.txt-strng.probabilidad.center', element => element.textContent.trim());
+        const temperatura = await page.$eval('.max.changeUnitT', element => element.textContent.trim());
         const qtde = await page.$eval('.changeUnitR', element => element.textContent.trim());
         const lastUpdated = new Date().toISOString();
 
+        console.log(`Dados coletados: Chuva: ${chuva}, Temperatura: ${temperatura}, Quantidade de Chuva: ${qtde}, Última Atualização: ${lastUpdated}`);
+
         await browser.close();
 
+        // Verifique se os dados coletados são válidos
+        if (!temperatura || !chuva || !qtde) {
+            throw new Error("Dados inválidos ou ausentes do site.");
+        }
+
+        // Formata os dados para envio
         const dataToMockAPI = {
-            temperatura: parseFloat(temperatura),
             chuva: parseInt(chuva, 10),
-            qtde: qtde,
+            temperatura: parseFloat(temperatura),
+            qtde: parseFloat(qtde.replace(/[^\d.-]/g, '')),
             lastUpdated: lastUpdated
         };
 
-        const mockAPIUrl = 'https://67365087aafa2ef222302dfc.mockapi.io/climaUpx/clima';
+        console.log('Enviando dados para o MockAPI...', dataToMockAPI);
 
-        const response = await fetch(`${mockAPIUrl}/ID_DO_REGISTRO`, {
-            method: 'PUT', // ou 'POST' conforme necessidade
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        // URL alterada para o novo recurso "clima2"
+        const mockAPIUrl = 'https://67365087aafa2ef222302dfc.mockapi.io/climaUpx/clima2';
+        const response = await fetch(mockAPIUrl, {
+            method: 'POST', // Usando POST para enviar os dados
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataToMockAPI)
         });
 
@@ -48,5 +54,5 @@ async function getWeatherData() {
     }
 }
 
-setInterval(getWeatherData, 300000);
-
+// Define o intervalo de execução a cada 1 minuto (60.000 ms)
+setInterval(getWeatherFromAPI, 14400000);  // Atualiza a cada 1 minuto
