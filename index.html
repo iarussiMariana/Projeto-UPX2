@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima - Pagina</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clima Atual</h1>
+        </header>
+
+        <!-- Caixa de informações sobre o clima -->
+        <div class="info-box">
+            <div class="weather-info">
+                <div class="temperature">
+                    <h2>Temperatura</h2>
+                    <p id="temperatura">--</p>
+                </div>
+
+                <div class="rain-probability">
+                    <h2>Probabilidade de Chuva</h2>
+                    <p id="chuva">--</p>
+                </div>
+
+                <div class="quantity">
+                    <h2>Quantidade de Chuva</h2>
+                    <p id="qtde">--</p>
+                </div>
+            </div>
+
+            <footer>
+                <p>Última Atualização: <span id="lastUpdated">--</span></p>
+                <a href="https://www.linkedin.com/in/mariana-iarussi-958752324/" class="credits" target="_blank">Feito por Mariana Iarussi</a>
+                <a href="https://www.linkedin.com/in/mariana-iarussi-958752324/" class="credits" target="_blank">e Isadora Soares</a>
+            </footer>
+            
+        </div>
+    </div>
+
+    <script>
+       async function getWeatherFromAPI() {
+            try {
+                const response = await fetch('https://67365087aafa2ef222302dfc.mockapi.io/climaUpx/clima');
+                const data = await response.json();
+
+                console.log('Dados recebidos da API:', data); // Adicione este log para ver os dados recebidos
+
+                if (data.length > 0) {
+                    // Ordena os dados pelo campo 'lastUpdated' em ordem decrescente
+                    data.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+
+                    console.log('Dados ordenados:', data); // Veja como os dados estão ordenados
+
+                    // Pega o item mais recente após a ordenação
+                    const climaData = data[0];
+                    document.getElementById('chuva').textContent = `Probabilidade de Chuva: ${climaData.chuva}%`;
+                    document.getElementById('temperatura').textContent = `Temperatura: ${climaData.temperatura} °C`;
+                    document.getElementById('qtde').textContent = `Quantidade de Chuva: ${climaData.qtde}`;
+                    document.getElementById('lastUpdated').textContent = `Última Atualização: ${climaData.lastUpdated}`;
+
+                    const localDate = new Date(climaData.lastUpdated); // Cria um objeto Date a partir da string ISO
+                    document.getElementById('lastUpdated').textContent = `Última Atualização: ${localDate.toLocaleString()}`;
+
+                } else {
+                    alert('Não há dados disponíveis.');
+                }
+            } catch (error) {
+                console.error('Erro ao buscar os dados do clima:', error);
+            }
+        }
+
+        // Atualiza a cada 4 horas (14.400.000 milissegundos)
+        setInterval(getWeatherFromAPI, 14400000);
+
+        // Carregar os dados ao carregar a página
+        window.onload = getWeatherFromAPI;
+    </script>
+</body>
+</html>

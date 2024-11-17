@@ -1,0 +1,127 @@
+/* Corpo da página */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('img/wp1.webp'); /* Caminho da imagem de fundo */
+    background-size: cover; /* Cobre toda a área da tela */
+    background-position: center center; /* Centraliza a imagem */
+    background-attachment: fixed; /* Faz com que a imagem de fundo fique fixa durante o rolar */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #2e7d32; /* Verde escuro para o texto */
+    position: relative;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Container que envolve o conteúdo */
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Fundo semitransparente para destacar o conteúdo */
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3); /* Sombra suave azul */
+    text-align: center;
+    width: 350px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+    transform: scale(1.05); /* Animação de aumento ao passar o mouse */
+}
+
+/* Cabeçalho */
+header h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #00796b; /* Verde azulado */
+    letter-spacing: 2px; /* Espaçamento entre letras */
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+header h1:hover {
+    color: #004d40; /* Cor mais escura ao passar o mouse */
+}
+
+/* Estilos gerais para as informações do clima */
+.weather-info {
+    margin-bottom: 30px;
+}
+
+/* Blocos de informação (temperatura, chuva, etc.) */
+.temperature, .rain-probability, .quantity {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #b2dfdb; /* Verde água claro */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra leve */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.temperature:hover, .rain-probability:hover, .quantity:hover {
+    transform: translateY(-5px); /* Elevação ao passar o mouse */
+    box-shadow: 0 6px 20px rgba(0, 128, 128, 0.4); /* Sombra mais forte */
+}
+
+/* Títulos das informações */
+h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #004d40; /* Verde escuro */
+    font-weight: 600;
+}
+
+/* Parágrafos com os dados */
+p {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Rodapé */
+footer {
+    font-size: 14px;
+    color: #004d40;
+    margin-top: 20px;
+}
+
+footer p span {
+    color: #00695c; /* Verde mais escuro */
+}
+
+/* Transições e animações */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+body, .container {
+    animation: fadeIn 1s ease-in-out; /* Animação de fade-in para a página */
+}
+
+footer {
+    font-size: 14px;
+    color: #004d40;
+    margin-top: 20px;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+footer p span {
+    color: #00695c; /* Verde mais escuro */
+}
+
+/* Estilo para o link no rodapé */
+footer .credits {
+    font-size: 12px;
+    color: #00796b;
+    text-decoration: none;
+    margin-top: 10px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+footer .credits:hover {
+    color: #004d40; /* Cor mais escura ao passar o mouse */
+}
